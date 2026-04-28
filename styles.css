@@ -157,6 +157,10 @@ button {
   background: #2b2825;
 }
 
+.hero-media img {
+  object-position: 68% 42%;
+}
+
 .hero-media::after {
   position: absolute;
   inset: 0;
@@ -978,6 +982,10 @@ h3 {
   .hero {
     min-height: auto;
     padding-top: 118px;
+  }
+
+  .hero-media img {
+    object-position: 62% 46%;
   }
 
   .hero-content {
