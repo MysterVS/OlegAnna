@@ -238,9 +238,9 @@ function getFilterRange() {
 function hasActiveFilters() {
   const { start, end } = getFilterRange();
   return (
-    (filterType?.value || "all") !== "all" ||
-    (filterFloor?.value || "all") !== "all" ||
-    (filterRoom?.value || "all") !== "all" ||
+    Boolean(filterType?.value) ||
+    Boolean(filterFloor?.value) ||
+    Boolean(filterRoom?.value) ||
     start !== defaultFilterStart ||
     end !== defaultFilterEnd
   );
@@ -261,14 +261,14 @@ function updateOccupancyToggle() {
 }
 
 function getFilteredRooms() {
-  const selectedType = filterType?.value || "all";
-  const selectedFloor = filterFloor?.value || "all";
-  const selectedRoom = filterRoom?.value || "all";
+  const selectedType = filterType?.value || "";
+  const selectedFloor = filterFloor?.value || "";
+  const selectedRoom = filterRoom?.value || "";
 
   return roomDefinitions.filter((room) => {
-    if (selectedType !== "all" && room.category !== selectedType) return false;
-    if (selectedFloor !== "all" && room.floor !== selectedFloor) return false;
-    if (selectedRoom !== "all" && room.id !== selectedRoom) return false;
+    if (selectedType && room.category !== selectedType) return false;
+    if (selectedFloor && room.floor !== selectedFloor) return false;
+    if (selectedRoom && room.id !== selectedRoom) return false;
     return true;
   });
 }
@@ -297,37 +297,37 @@ function getRangeStatusText(roomId, startIso, endIso) {
 function populateFilterOptions() {
   if (!filterType || !filterFloor || !filterRoom) return;
 
-  const previousType = filterType.value || "all";
-  const previousFloor = filterFloor.value || "all";
-  const previousRoom = filterRoom.value || "all";
+  const previousType = filterType.value || "";
+  const previousFloor = filterFloor.value || "";
+  const previousRoom = filterRoom.value || "";
 
   const types = [...new Map(roomDefinitions.map((room) => [room.category, room.categoryLabel])).entries()];
-  filterType.innerHTML = ['<option value="all">Все типы</option>']
+  filterType.innerHTML = ['<option value=""></option>']
     .concat(types.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`))
     .join("");
-  filterType.value = types.some(([value]) => value === previousType) ? previousType : "all";
+  filterType.value = types.some(([value]) => value === previousType) ? previousType : "";
 
-  const roomsForFloor = roomDefinitions.filter((room) => filterType.value === "all" || room.category === filterType.value);
+  const roomsForFloor = roomDefinitions.filter((room) => !filterType.value || room.category === filterType.value);
   const floors = [...new Map(roomsForFloor.map((room) => [room.floor, room.floorLabel])).entries()];
-  filterFloor.innerHTML = ['<option value="all">Все этажи</option>']
+  filterFloor.innerHTML = ['<option value=""></option>']
     .concat(floors.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`))
     .join("");
-  filterFloor.value = floors.some(([value]) => value === previousFloor) ? previousFloor : "all";
+  filterFloor.value = floors.some(([value]) => value === previousFloor) ? previousFloor : "";
 
   const roomsForSelect = roomDefinitions.filter((room) => {
-    if (filterType.value !== "all" && room.category !== filterType.value) return false;
-    if (filterFloor.value !== "all" && room.floor !== filterFloor.value) return false;
+    if (filterType.value && room.category !== filterType.value) return false;
+    if (filterFloor.value && room.floor !== filterFloor.value) return false;
     return true;
   });
 
-  filterRoom.innerHTML = ['<option value="all">Все номера</option>']
+  filterRoom.innerHTML = ['<option value=""></option>']
     .concat(
       roomsForSelect.map(
         (room) => `<option value="${room.id}">${escapeHtml(`${room.code} • ${room.categoryLabel} • ${room.floorLabel}`)}</option>`
       )
     )
     .join("");
-  filterRoom.value = roomsForSelect.some((room) => room.id === previousRoom) ? previousRoom : "all";
+  filterRoom.value = roomsForSelect.some((room) => room.id === previousRoom) ? previousRoom : "";
 }
 
 function renderRoomList() {
@@ -834,7 +834,7 @@ roomCheckButtons.forEach((button) => {
     if (!category) return;
     if (filterType) filterType.value = category;
     populateFilterOptions();
-    if (filterRoom) filterRoom.value = "all";
+    if (filterRoom) filterRoom.value = "";
     occupancyExpanded = true;
     renderRoomList();
     document.getElementById("occupancy")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -891,9 +891,10 @@ occupancyToggle?.addEventListener("click", () => {
 });
 
 filterReset?.addEventListener("click", () => {
-  if (filterType) filterType.value = "all";
+  if (filterType) filterType.value = "";
   populateFilterOptions();
-  if (filterRoom) filterRoom.value = "all";
+  if (filterRoom) filterRoom.value = "";
+  if (filterFloor) filterFloor.value = "";
   if (filterStart) filterStart.value = defaultFilterStart;
   if (filterEnd) filterEnd.value = defaultFilterEnd;
   occupancyExpanded = false;
