@@ -1188,6 +1188,10 @@ h3 {
   color: var(--ink);
 }
 
+.field select.is-placeholder {
+  color: #9a9087;
+}
+
 .field textarea {
   min-height: 88px;
   resize: vertical;
