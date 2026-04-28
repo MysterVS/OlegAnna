@@ -19,6 +19,7 @@ const adminSaveButton = document.querySelector("[data-admin-save]");
 const adminSaveMessage = document.querySelector("[data-admin-save-message]");
 const adminLogoutButton = document.querySelector("[data-admin-logout]");
 
+const occupancyLayout = document.querySelector("[data-occupancy-layout]");
 const roomList = document.querySelector("[data-room-list]");
 const occupancySummary = document.querySelector("[data-occupancy-summary]");
 const occupancyToggle = document.querySelector("[data-occupancy-toggle]");
@@ -130,6 +131,33 @@ function monthLabel(date) {
 
 function monthInputValue(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function renderSelectOptions(select, config) {
+  if (!(select instanceof HTMLSelectElement)) return;
+  const selectedValue = config.selectedValue || "";
+  const options = [
+    `<option value="" disabled ${selectedValue === "" ? "selected" : ""}>${escapeHtml(config.placeholder)}</option>`
+  ];
+
+  if (config.includeAll) {
+    options.push(
+      `<option value="all" ${selectedValue === "all" ? "selected" : ""}>${escapeHtml(config.allLabel || "")}</option>`
+    );
+  }
+
+  options.push(
+    ...config.items.map(
+      (item) => `<option value="${escapeHtml(item.value)}" ${selectedValue === item.value ? "selected" : ""}>${escapeHtml(item.label)}</option>`
+    )
+  );
+
+  select.innerHTML = options.join("");
+  if (selectedValue === "") {
+    select.selectedIndex = 0;
+  } else {
+    select.value = selectedValue;
+  }
 }
 
 function createDefaultState() {
@@ -308,17 +336,25 @@ function populateFilterOptions() {
   const previousRoom = filterRoom.value || "";
 
   const types = [...new Map(roomDefinitions.map((room) => [room.category, room.categoryLabel])).entries()];
-  filterType.innerHTML = ['<option value="" disabled>Выберите тип</option>', '<option value="all">Все типы номеров</option>']
-    .concat(types.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`))
-    .join("");
-  filterType.value = previousType === "all" || types.some(([value]) => value === previousType) ? previousType : "";
+  const selectedType = previousType === "all" || types.some(([value]) => value === previousType) ? previousType : "";
+  renderSelectOptions(filterType, {
+    placeholder: "Выберите тип",
+    includeAll: true,
+    allLabel: "Все типы номеров",
+    selectedValue: selectedType,
+    items: types.map(([value, label]) => ({ value, label }))
+  });
 
   const roomsForFloor = roomDefinitions.filter((room) => !filterType.value || filterType.value === "all" || room.category === filterType.value);
   const floors = [...new Map(roomsForFloor.map((room) => [room.floor, room.floorLabel])).entries()];
-  filterFloor.innerHTML = ['<option value="" disabled>Выберите этаж</option>', '<option value="all">Любой этаж</option>']
-    .concat(floors.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`))
-    .join("");
-  filterFloor.value = previousFloor === "all" || floors.some(([value]) => value === previousFloor) ? previousFloor : "";
+  const selectedFloor = previousFloor === "all" || floors.some(([value]) => value === previousFloor) ? previousFloor : "";
+  renderSelectOptions(filterFloor, {
+    placeholder: "Выберите этаж",
+    includeAll: true,
+    allLabel: "Любой этаж",
+    selectedValue: selectedFloor,
+    items: floors.map(([value, label]) => ({ value, label }))
+  });
 
   const roomsForSelect = roomDefinitions.filter((room) => {
     if (filterType.value && filterType.value !== "all" && room.category !== filterType.value) return false;
@@ -326,14 +362,17 @@ function populateFilterOptions() {
     return true;
   });
 
-  filterRoom.innerHTML = ['<option value="" disabled>Выберите номер</option>', '<option value="all">Все номера</option>']
-    .concat(
-      roomsForSelect.map(
-        (room) => `<option value="${room.id}">${escapeHtml(`${room.code} • ${room.categoryLabel} • ${room.floorLabel}`)}</option>`
-      )
-    )
-    .join("");
-  filterRoom.value = previousRoom === "all" || roomsForSelect.some((room) => room.id === previousRoom) ? previousRoom : "";
+  const selectedRoom = previousRoom === "all" || roomsForSelect.some((room) => room.id === previousRoom) ? previousRoom : "";
+  renderSelectOptions(filterRoom, {
+    placeholder: "Выберите номер",
+    includeAll: true,
+    allLabel: "Все номера",
+    selectedValue: selectedRoom,
+    items: roomsForSelect.map((room) => ({
+      value: room.id,
+      label: `${room.code} • ${room.categoryLabel} • ${room.floorLabel}`
+    }))
+  });
   syncPlaceholderState();
 }
 
@@ -546,6 +585,7 @@ function updateAdminVisibility() {
   const loggedIn = isAdminLoggedIn();
   adminPanel?.classList.toggle("is-hidden", !loggedIn);
   adminTrigger?.classList.toggle("is-active", loggedIn);
+  occupancyLayout?.classList.toggle("is-admin-active", loggedIn);
   if (loggedIn) {
     renderAdminEditor();
   }
