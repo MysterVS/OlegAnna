@@ -141,7 +141,10 @@
               <p>15 кв. м, две односпальные кровати, быстрый интернет, душ и туалет в номере.</p>
               <div class="room-footer">
                 <strong>от 3 600 ₽</strong>
-                <a href="#booking">Запросить</a>
+                <div class="room-footer-actions">
+                  <button class="button button-secondary room-check-button" type="button" data-room-check="standard">Проверить занятость</button>
+                  <a href="#booking">Запросить</a>
+                </div>
               </div>
             </div>
           </article>
@@ -188,7 +191,10 @@
               <p>18 кв. м, кондиционер, телевизор, холодильник и балкон с видом на горы.</p>
               <div class="room-footer">
                 <strong>от 4 000 ₽</strong>
-                <a href="#booking">Запросить</a>
+                <div class="room-footer-actions">
+                  <button class="button button-secondary room-check-button" type="button" data-room-check="comfort">Проверить занятость</button>
+                  <a href="#booking">Запросить</a>
+                </div>
               </div>
             </div>
           </article>
@@ -232,7 +238,10 @@
               <p>54 кв. м, три комнаты, общий коридор, балкон, душ, туалет, чайник и микроволновая печь.</p>
               <div class="room-footer">
                 <strong>от 7 000 ₽</strong>
-                <a href="#booking">Запросить</a>
+                <div class="room-footer-actions">
+                  <button class="button button-secondary room-check-button" type="button" data-room-check="family">Проверить занятость</button>
+                  <a href="#booking">Запросить</a>
+                </div>
               </div>
             </div>
           </article>
@@ -338,8 +347,12 @@
                 </select>
               </label>
               <label class="field">
-                <span>Дата</span>
-                <input type="date" data-filter-date />
+                <span>Заезд</span>
+                <input type="date" data-filter-start />
+              </label>
+              <label class="field">
+                <span>Выезд</span>
+                <input type="date" data-filter-end />
               </label>
             </div>
             <div class="occupancy-filter-actions">

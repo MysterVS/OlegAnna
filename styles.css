@@ -519,6 +519,20 @@ h3 {
   font-weight: 900;
 }
 
+.room-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: 12px;
+}
+
+.room-check-button {
+  min-height: 40px;
+  padding: 10px 16px;
+  font-weight: 800;
+}
+
 .amenities-section h2 {
   max-width: 560px;
 }
@@ -806,7 +820,7 @@ h3 {
 
 .occupancy-filter-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -1718,6 +1732,12 @@ h3 {
   .occupancy-filter-grid,
   .admin-room-fields {
     grid-template-columns: 1fr;
+  }
+
+  .room-footer,
+  .room-footer-actions {
+    align-items: start;
+    justify-content: start;
   }
 
   .occupancy-filter-actions,

@@ -24,8 +24,10 @@ const occupancySummary = document.querySelector("[data-occupancy-summary]");
 const filterType = document.querySelector("[data-filter-type]");
 const filterFloor = document.querySelector("[data-filter-floor]");
 const filterRoom = document.querySelector("[data-filter-room]");
-const filterDate = document.querySelector("[data-filter-date]");
+const filterStart = document.querySelector("[data-filter-start]");
+const filterEnd = document.querySelector("[data-filter-end]");
 const filterReset = document.querySelector("[data-filter-reset]");
+const roomCheckButtons = document.querySelectorAll("[data-room-check]");
 
 const calendarDialog = document.querySelector("[data-calendar-dialog]");
 const calendarClose = document.querySelector("[data-calendar-close]");
@@ -60,12 +62,14 @@ const roomDefinitions = [
   { id: "C5", code: "5-й", category: "comfort", categoryLabel: "Стандарт улучшенный", floor: "2", floorLabel: "2 этаж" },
   { id: "C6", code: "6-й", category: "comfort", categoryLabel: "Стандарт улучшенный", floor: "2", floorLabel: "2 этаж" },
   { id: "C7", code: "7-й", category: "comfort", categoryLabel: "Стандарт улучшенный", floor: "2", floorLabel: "2 этаж" },
-  { id: "C8", code: "8-й", category: "comfort", categoryLabel: "Стандарт улучшенный", floor: "2", floorLabel: "2 этаж" }
+  { id: "C8", code: "8-й", category: "comfort", categoryLabel: "Стандарт улучшенный", floor: "2", floorLabel: "2 этаж" },
+  { id: "F1", code: "Этаж семейный", category: "family", categoryLabel: "Этаж семейный", floor: "family", floorLabel: "Семейный этаж" }
 ];
 
 const roomGroups = [
   { category: "standard", categoryLabel: "Стандарт", subtitle: "14 номеров: 2 на первом этаже, 6 на втором и 6 на третьем." },
-  { category: "comfort", categoryLabel: "Стандарт улучшенный", subtitle: "8 номеров: 4 на первом этаже и 4 на втором." }
+  { category: "comfort", categoryLabel: "Стандарт улучшенный", subtitle: "8 номеров: 4 на первом этаже и 4 на втором." },
+  { category: "family", categoryLabel: "Этаж семейный", subtitle: "1 отдельный семейный этаж для большой компании." }
 ];
 
 let activeLightboxGroup = [];
@@ -212,8 +216,11 @@ function setMessage(target, text, tone = "") {
   if (tone) target.classList.add(tone);
 }
 
-function getFilterDate() {
-  return filterDate?.value || todayIso();
+function getFilterRange() {
+  const start = filterStart?.value || todayIso();
+  const endRaw = filterEnd?.value || start;
+  const end = endRaw < start ? start : endRaw;
+  return { start, end };
 }
 
 function getFilteredRooms() {
@@ -227,6 +234,27 @@ function getFilteredRooms() {
     if (selectedRoom !== "all" && room.id !== selectedRoom) return false;
     return true;
   });
+}
+
+function isRangeBusy(roomId, startIso, endIso) {
+  return getBookingsForRoom(roomId).some((booking) => booking.start <= endIso && booking.end >= startIso);
+}
+
+function getRangeStatus(roomId, startIso, endIso) {
+  return isRangeBusy(roomId, startIso, endIso)
+    ? { label: "Занят", className: "status-busy" }
+    : { label: "Свободен", className: "status-free" };
+}
+
+function getRangeStatusText(roomId, startIso, endIso) {
+  const bookings = getBookingsForRoom(roomId).sort((a, b) => a.start.localeCompare(b.start));
+  const overlapping = bookings.find((booking) => booking.start <= endIso && booking.end >= startIso);
+
+  if (overlapping) {
+    return `Занят: ${formatDate(overlapping.start)} — ${formatDate(overlapping.end)}`;
+  }
+
+  return `Свободен на период ${formatDate(startIso)} — ${formatDate(endIso)}`;
 }
 
 function populateFilterOptions() {
@@ -267,14 +295,14 @@ function populateFilterOptions() {
 
 function renderRoomList() {
   if (!roomList) return;
-  const checkDate = getFilterDate();
+  const { start, end } = getFilterRange();
   const rooms = getFilteredRooms();
-  const busyCount = rooms.filter((room) => isDateBusy(room.id, checkDate)).length;
+  const busyCount = rooms.filter((room) => isRangeBusy(room.id, start, end)).length;
   const freeCount = rooms.length - busyCount;
 
   roomList.innerHTML = rooms
     .map((room) => {
-      const status = getCurrentStatus(room.id, checkDate);
+      const status = getRangeStatus(room.id, start, end);
       const note = getRoomNote(room.id);
       return `
         <article class="occupancy-card">
@@ -282,18 +310,18 @@ function renderRoomList() {
             <div>
               <div class="occupancy-type">${escapeHtml(room.categoryLabel)} • ${escapeHtml(room.floorLabel)}</div>
               <h3>${escapeHtml(room.code)}</h3>
-              <p>${escapeHtml(getStatusText(room.id, checkDate))}</p>
+              <p>${escapeHtml(getRangeStatusText(room.id, start, end))}</p>
             </div>
             <span class="status-badge ${status.className}">${status.label}</span>
           </div>
           <div class="occupancy-meta">
             <div class="occupancy-meta-row">
-              <span class="occupancy-label">Проверка на дату</span>
-              <span class="occupancy-value">${escapeHtml(formatDate(checkDate))}</span>
+              <span class="occupancy-label">Период</span>
+              <span class="occupancy-value">${escapeHtml(formatDate(start))} — ${escapeHtml(formatDate(end))}</span>
             </div>
             <div class="occupancy-meta-row">
               <span class="occupancy-label">Ближайший статус</span>
-              <span class="occupancy-value">${escapeHtml(getStatusText(room.id, checkDate))}</span>
+              <span class="occupancy-value">${escapeHtml(getRangeStatusText(room.id, start, end))}</span>
             </div>
           </div>
           <p class="occupancy-note">${escapeHtml(note || "Примечание для гостей пока не добавлено.")}</p>
@@ -308,7 +336,7 @@ function renderRoomList() {
   if (occupancySummary) {
     occupancySummary.textContent =
       rooms.length > 0
-        ? `На ${formatDate(checkDate)}: свободно ${freeCount}, занято ${busyCount}. Показано номеров: ${rooms.length}.`
+        ? `На период ${formatDate(start)} — ${formatDate(end)}: свободно ${freeCount}, занято ${busyCount}. Показано номеров: ${rooms.length}.`
         : "По выбранным фильтрам номера не найдены.";
   }
 }
@@ -411,7 +439,7 @@ function openCalendar(roomId) {
   if (!room) return;
 
   activeCalendarRoomId = roomId;
-  const startDate = parseIsoDate(getFilterDate());
+  const startDate = parseIsoDate(getFilterRange().start);
   const firstMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
   const secondMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
 
@@ -755,6 +783,18 @@ roomList?.addEventListener("click", (event) => {
   openCalendar(roomId);
 });
 
+roomCheckButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const category = button.getAttribute("data-room-check");
+    if (!category) return;
+    if (filterType) filterType.value = category;
+    populateFilterOptions();
+    if (filterRoom) filterRoom.value = "all";
+    renderRoomList();
+    document.getElementById("occupancy")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
 calendarClose?.addEventListener("click", () => {
   calendarDialog?.close();
 });
@@ -773,18 +813,34 @@ calendarDialog?.addEventListener("click", (event) => {
 });
 
 filterRoom?.addEventListener("change", renderRoomList);
-filterDate?.addEventListener("change", renderRoomList);
+filterStart?.addEventListener("change", () => {
+  if (filterEnd && filterEnd.value && filterEnd.value < (filterStart?.value || todayIso())) {
+    filterEnd.value = filterStart?.value || todayIso();
+  }
+  renderRoomList();
+});
+filterEnd?.addEventListener("change", () => {
+  if (filterStart && filterEnd && filterEnd.value < filterStart.value) {
+    filterEnd.value = filterStart.value;
+  }
+  renderRoomList();
+});
 
 filterReset?.addEventListener("click", () => {
   if (filterType) filterType.value = "all";
   populateFilterOptions();
   if (filterRoom) filterRoom.value = "all";
-  if (filterDate) filterDate.value = todayIso();
+  if (filterStart) filterStart.value = todayIso();
+  if (filterEnd) filterEnd.value = addDays(todayIso(), 6);
   renderRoomList();
 });
 
-if (filterDate) {
-  filterDate.value = todayIso();
+if (filterStart) {
+  filterStart.value = todayIso();
+}
+
+if (filterEnd) {
+  filterEnd.value = addDays(todayIso(), 6);
 }
 
 populateFilterOptions();
