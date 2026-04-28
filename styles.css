@@ -149,6 +149,12 @@ button {
   box-shadow: 0 12px 20px rgba(23, 20, 18, 0.1);
 }
 
+.admin-trigger.is-active {
+  color: var(--accent);
+  border-color: rgba(255, 56, 92, 0.3);
+  background: #fff4f6;
+}
+
 .admin-trigger svg {
   width: 20px;
   height: 20px;
@@ -793,16 +799,40 @@ h3 {
   padding-bottom: 28px;
 }
 
+.occupancy-filters {
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.occupancy-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.occupancy-filter-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.occupancy-summary {
+  margin: 0;
+  color: var(--muted);
+}
+
 .occupancy-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
   gap: 22px;
   align-items: start;
 }
 
 .occupancy-public {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -829,6 +859,10 @@ h3 {
 .occupancy-card h3,
 .admin-card h3 {
   margin-bottom: 8px;
+}
+
+.occupancy-card h3 {
+  margin-top: 0;
 }
 
 .occupancy-card p,
@@ -872,6 +906,15 @@ h3 {
   color: #926800;
 }
 
+.occupancy-type {
+  margin-bottom: 6px;
+  color: #8a8078;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .occupancy-meta {
   display: grid;
   gap: 10px;
@@ -903,6 +946,18 @@ h3 {
   color: var(--muted);
 }
 
+.occupancy-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.occupancy-card-actions .button {
+  min-height: 42px;
+  padding: 10px 16px;
+}
+
 .occupancy-admin {
   display: grid;
   gap: 18px;
@@ -930,6 +985,35 @@ h3 {
   gap: 18px;
 }
 
+.admin-editor-toolbar {
+  margin-bottom: 18px;
+}
+
+.admin-editor-hint {
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-group {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-group-title {
+  margin: 8px 0 0;
+  font-size: 18px;
+}
+
+.admin-group-subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-room-grid {
+  display: grid;
+  gap: 14px;
+}
+
 .admin-room {
   padding: 18px;
   border: 1px solid var(--line);
@@ -937,9 +1021,104 @@ h3 {
   background: #fffcf8;
 }
 
-.admin-room h4 {
-  margin: 0 0 14px;
+.admin-room-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.admin-room-head h4 {
+  margin: 0 0 6px;
   font-size: 16px;
+}
+
+.admin-room-head p {
+  margin: 0;
+}
+
+.admin-room-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.admin-booking-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  gap: 10px;
+  padding: 14px;
+  margin-top: 14px;
+  border: 1px solid #efe5db;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.admin-booking-form .button {
+  align-self: end;
+  min-height: 46px;
+}
+
+.booking-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.booking-item {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.booking-item strong,
+.booking-item p {
+  display: block;
+}
+
+.booking-item strong {
+  margin-bottom: 4px;
+}
+
+.booking-item p {
+  margin: 0;
+}
+
+.booking-empty {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.icon-button {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  color: var(--accent);
+  border-color: rgba(255, 56, 92, 0.3);
 }
 
 .field {
@@ -1025,6 +1204,133 @@ h3 {
   font-size: 26px;
   line-height: 1;
   cursor: pointer;
+}
+
+.calendar-dialog {
+  width: min(960px, calc(100% - 28px));
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.calendar-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.52);
+}
+
+.calendar-dialog-card {
+  position: relative;
+  padding: 26px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 22px 54px rgba(23, 20, 18, 0.24);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-right: 44px;
+  margin-bottom: 18px;
+}
+
+.calendar-header h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.calendar-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.calendar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-chip {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-free {
+  background: #e7f7ef;
+}
+
+.legend-busy {
+  background: #fff0f3;
+}
+
+.calendar-months {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.calendar-month {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf9;
+}
+
+.calendar-month h4 {
+  margin: 0 0 14px;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.calendar-weekdays span {
+  color: #8a8078;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.calendar-day {
+  display: grid;
+  min-height: 44px;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #f6f0ea;
+  color: #8a8078;
+}
+
+.calendar-day.free {
+  background: #eef8f2;
+  color: #137a47;
+}
+
+.calendar-day.busy {
+  background: #fff1f4;
+  color: var(--accent-dark);
+}
+
+.calendar-day.today {
+  outline: 2px solid rgba(255, 56, 92, 0.4);
+  outline-offset: -2px;
+}
+
+.calendar-day.empty {
+  background: transparent;
 }
 
 .is-hidden {
@@ -1279,6 +1585,16 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .occupancy-filter-grid,
+  .admin-room-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-booking-form,
+  .calendar-months {
+    grid-template-columns: 1fr;
+  }
+
   .section-heading {
     display: block;
   }
@@ -1376,6 +1692,7 @@ h3 {
   .section,
   .rooms-section > *,
   .booking-section > *,
+  .occupancy-shell,
   .gallery-grid,
   .footer {
     width: calc(100% - 28px);
@@ -1390,6 +1707,35 @@ h3 {
   .occupancy-public,
   .gallery-grid {
     grid-template-columns: 1fr;
+  }
+
+  .occupancy-filters,
+  .admin-card,
+  .calendar-dialog-card {
+    padding: 20px;
+  }
+
+  .occupancy-filter-grid,
+  .admin-room-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .occupancy-filter-actions,
+  .calendar-header {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .admin-booking-form {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-dialog {
+    width: calc(100% - 20px);
+  }
+
+  .calendar-day {
+    min-height: 38px;
   }
 
   .gallery-large {

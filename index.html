@@ -312,21 +312,55 @@
           <div class="section-heading occupancy-heading">
             <div>
               <div class="section-kicker">Занятость</div>
-              <h2>Текущая занятость номеров</h2>
+              <h2>Свободные и занятые номера</h2>
             </div>
-            <p>Статусы видны всем. Редактирование доступно только после входа администратора.</p>
+            <p>Гости могут посмотреть статус по типу номера, этажу, конкретной комнате и дате. Администратор управляет календарями после входа.</p>
+          </div>
+
+          <div class="admin-card occupancy-filters">
+            <div class="occupancy-filter-grid">
+              <label class="field">
+                <span>Тип номера</span>
+                <select data-filter-type>
+                  <option value="all">Все типы</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Этаж</span>
+                <select data-filter-floor>
+                  <option value="all">Все этажи</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Номер</span>
+                <select data-filter-room>
+                  <option value="all">Все номера</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Дата</span>
+                <input type="date" data-filter-date />
+              </label>
+            </div>
+            <div class="occupancy-filter-actions">
+              <button class="button button-secondary" type="button" data-filter-reset>Сбросить фильтры</button>
+              <p class="occupancy-summary" data-occupancy-summary></p>
+            </div>
           </div>
 
           <div class="occupancy-layout">
-            <div class="occupancy-public" data-occupancy-public></div>
+            <div class="occupancy-public" data-room-list></div>
 
             <aside class="occupancy-admin">
               <div class="admin-card is-hidden" data-admin-panel>
                 <div class="admin-card-heading">
-                  <h3>Управление занятостью</h3>
-                  <p>Изменения сразу отображаются в публичном блоке на этом устройстве.</p>
+                  <h3>Редактирование занятости</h3>
+                  <p>Добавляйте занятые периоды, удаляйте старые записи и ведите примечания по каждому номеру.</p>
                 </div>
-                <form class="admin-editor" data-admin-editor></form>
+                <div class="admin-editor-toolbar">
+                  <p class="admin-editor-hint">В этом варианте сайта изменения сохраняются в браузере администратора на текущем устройстве.</p>
+                </div>
+                <div class="admin-editor" data-admin-editor></div>
                 <div class="admin-actions">
                   <button class="button button-primary" type="button" data-admin-save>Сохранить</button>
                   <button class="button button-secondary" type="button" data-admin-logout>Выйти</button>
@@ -390,6 +424,23 @@
           <button class="button button-primary" type="submit">Войти</button>
           <p class="admin-message" data-admin-message aria-live="polite"></p>
         </form>
+      </div>
+    </dialog>
+
+    <dialog class="calendar-dialog" data-calendar-dialog aria-label="Календарь занятости номера">
+      <div class="calendar-dialog-card">
+        <button class="admin-dialog-close" type="button" data-calendar-close aria-label="Закрыть">×</button>
+        <div class="calendar-header">
+          <div>
+            <h3 data-calendar-title>Календарь номера</h3>
+            <p data-calendar-subtitle>Свободные и занятые даты</p>
+          </div>
+          <div class="calendar-legend">
+            <span><i class="legend-chip legend-free"></i>Свободно</span>
+            <span><i class="legend-chip legend-busy"></i>Занято</span>
+          </div>
+        </div>
+        <div class="calendar-months" data-calendar-months></div>
       </div>
     </dialog>
 
