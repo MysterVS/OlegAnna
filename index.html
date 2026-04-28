@@ -359,10 +359,14 @@
               <button class="button button-secondary" type="button" data-filter-reset>Сбросить фильтры</button>
               <p class="occupancy-summary" data-occupancy-summary></p>
             </div>
+            <button class="occupancy-toggle" type="button" data-occupancy-toggle aria-expanded="false">
+              <span data-occupancy-toggle-label>Показать номера</span>
+              <span class="occupancy-toggle-icon" aria-hidden="true">⌄</span>
+            </button>
           </div>
 
           <div class="occupancy-layout">
-            <div class="occupancy-public" data-room-list></div>
+            <div class="occupancy-public is-collapsed" data-room-list></div>
 
             <aside class="occupancy-admin">
               <div class="admin-card is-hidden" data-admin-panel>

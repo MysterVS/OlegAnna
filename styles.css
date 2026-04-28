@@ -837,6 +837,34 @@ h3 {
   color: var(--muted);
 }
 
+.occupancy-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin-top: 16px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.occupancy-toggle:disabled {
+  color: #a2968c;
+  cursor: default;
+}
+
+.occupancy-toggle-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.occupancy-toggle.is-open .occupancy-toggle-icon {
+  transform: rotate(180deg);
+}
+
 .occupancy-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
@@ -848,6 +876,10 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+}
+
+.occupancy-public.is-collapsed {
+  display: none;
 }
 
 .occupancy-card,

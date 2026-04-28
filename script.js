@@ -21,6 +21,8 @@ const adminLogoutButton = document.querySelector("[data-admin-logout]");
 
 const roomList = document.querySelector("[data-room-list]");
 const occupancySummary = document.querySelector("[data-occupancy-summary]");
+const occupancyToggle = document.querySelector("[data-occupancy-toggle]");
+const occupancyToggleLabel = document.querySelector("[data-occupancy-toggle-label]");
 const filterType = document.querySelector("[data-filter-type]");
 const filterFloor = document.querySelector("[data-filter-floor]");
 const filterRoom = document.querySelector("[data-filter-room]");
@@ -76,6 +78,7 @@ let activeLightboxGroup = [];
 let activeLightboxIndex = 0;
 let occupancyState = loadOccupancyState();
 let activeCalendarRoomId = null;
+let occupancyExpanded = false;
 
 function escapeHtml(value) {
   return String(value)
@@ -92,6 +95,9 @@ function todayIso() {
   const day = String(now.getDate()).padStart(2, "0");
   return `${now.getFullYear()}-${month}-${day}`;
 }
+
+const defaultFilterStart = todayIso();
+const defaultFilterEnd = addDays(defaultFilterStart, 6);
 
 function parseIsoDate(value) {
   return new Date(`${value}T00:00:00`);
@@ -217,10 +223,35 @@ function setMessage(target, text, tone = "") {
 }
 
 function getFilterRange() {
-  const start = filterStart?.value || todayIso();
+  const start = filterStart?.value || defaultFilterStart;
   const endRaw = filterEnd?.value || start;
   const end = endRaw < start ? start : endRaw;
   return { start, end };
+}
+
+function hasActiveFilters() {
+  const { start, end } = getFilterRange();
+  return (
+    (filterType?.value || "all") !== "all" ||
+    (filterFloor?.value || "all") !== "all" ||
+    (filterRoom?.value || "all") !== "all" ||
+    start !== defaultFilterStart ||
+    end !== defaultFilterEnd
+  );
+}
+
+function updateOccupancyToggle() {
+  if (!occupancyToggle || !occupancyToggleLabel || !roomList) return;
+  const active = hasActiveFilters();
+  occupancyToggle.disabled = !active;
+  occupancyToggle.classList.toggle("is-open", active && occupancyExpanded);
+  occupancyToggle.setAttribute("aria-expanded", String(active && occupancyExpanded));
+  occupancyToggleLabel.textContent = active
+    ? occupancyExpanded
+      ? "Скрыть номера"
+      : "Показать номера"
+    : "Номера появятся после выбора фильтра";
+  roomList.classList.toggle("is-collapsed", !(active && occupancyExpanded));
 }
 
 function getFilteredRooms() {
@@ -339,6 +370,8 @@ function renderRoomList() {
         ? `На период ${formatDate(start)} — ${formatDate(end)}: свободно ${freeCount}, занято ${busyCount}. Показано номеров: ${rooms.length}.`
         : "По выбранным фильтрам номера не найдены.";
   }
+
+  updateOccupancyToggle();
 }
 
 function renderAdminEditor() {
@@ -790,6 +823,7 @@ roomCheckButtons.forEach((button) => {
     if (filterType) filterType.value = category;
     populateFilterOptions();
     if (filterRoom) filterRoom.value = "all";
+    occupancyExpanded = true;
     renderRoomList();
     document.getElementById("occupancy")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -808,39 +842,52 @@ calendarDialog?.addEventListener("click", (event) => {
 [filterType, filterFloor].forEach((control) => {
   control?.addEventListener("change", () => {
     populateFilterOptions();
+    occupancyExpanded = hasActiveFilters();
     renderRoomList();
   });
 });
 
-filterRoom?.addEventListener("change", renderRoomList);
+filterRoom?.addEventListener("change", () => {
+  occupancyExpanded = hasActiveFilters();
+  renderRoomList();
+});
 filterStart?.addEventListener("change", () => {
   if (filterEnd && filterEnd.value && filterEnd.value < (filterStart?.value || todayIso())) {
     filterEnd.value = filterStart?.value || todayIso();
   }
+  occupancyExpanded = hasActiveFilters();
   renderRoomList();
 });
 filterEnd?.addEventListener("change", () => {
   if (filterStart && filterEnd && filterEnd.value < filterStart.value) {
     filterEnd.value = filterStart.value;
   }
+  occupancyExpanded = hasActiveFilters();
   renderRoomList();
+});
+
+occupancyToggle?.addEventListener("click", () => {
+  if (!hasActiveFilters()) return;
+  occupancyExpanded = !occupancyExpanded;
+  updateOccupancyToggle();
 });
 
 filterReset?.addEventListener("click", () => {
   if (filterType) filterType.value = "all";
   populateFilterOptions();
   if (filterRoom) filterRoom.value = "all";
-  if (filterStart) filterStart.value = todayIso();
-  if (filterEnd) filterEnd.value = addDays(todayIso(), 6);
+  if (filterStart) filterStart.value = defaultFilterStart;
+  if (filterEnd) filterEnd.value = defaultFilterEnd;
+  occupancyExpanded = false;
   renderRoomList();
 });
 
 if (filterStart) {
-  filterStart.value = todayIso();
+  filterStart.value = defaultFilterStart;
 }
 
 if (filterEnd) {
-  filterEnd.value = addDays(todayIso(), 6);
+  filterEnd.value = defaultFilterEnd;
 }
 
 populateFilterOptions();
