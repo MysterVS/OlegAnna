@@ -759,6 +759,220 @@ h3 {
   padding-bottom: 30px;
 }
 
+.occupancy-section {
+  padding: 0 0 110px;
+}
+
+.occupancy-shell {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.occupancy-heading {
+  padding-bottom: 28px;
+}
+
+.occupancy-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.85fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.occupancy-public {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.occupancy-card,
+.admin-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(34, 28, 23, 0.06);
+}
+
+.occupancy-card {
+  padding: 24px;
+}
+
+.occupancy-card-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.occupancy-card h3,
+.admin-card h3 {
+  margin-bottom: 8px;
+}
+
+.occupancy-card p,
+.admin-card p,
+.field span,
+.field input,
+.field textarea,
+.field select {
+  font-size: 15px;
+}
+
+.occupancy-card p,
+.admin-card p {
+  color: var(--muted);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-free {
+  background: #e7f7ef;
+  color: #137a47;
+}
+
+.status-busy {
+  background: #fff0f3;
+  color: var(--accent-dark);
+}
+
+.status-hold {
+  background: #fff6df;
+  color: #926800;
+}
+
+.occupancy-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.occupancy-meta-row {
+  display: grid;
+  gap: 4px;
+}
+
+.occupancy-label {
+  color: #8a8078;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.occupancy-value {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.occupancy-note {
+  padding-top: 14px;
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.occupancy-admin {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-card {
+  padding: 24px;
+}
+
+.admin-card-heading {
+  margin-bottom: 18px;
+}
+
+.admin-card-heading p {
+  margin-bottom: 0;
+}
+
+.admin-form,
+.admin-editor {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-editor {
+  gap: 18px;
+}
+
+.admin-room {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffcf8;
+}
+
+.admin-room h4 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  color: #6e655e;
+  font-weight: 700;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.admin-message {
+  min-height: 20px;
+  margin: 0;
+  color: #7a6f67;
+  font-size: 14px;
+}
+
+.admin-message.is-error {
+  color: var(--accent-dark);
+}
+
+.admin-message.is-success {
+  color: #137a47;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
 .gallery-grid {
   display: grid;
   width: min(1180px, calc(100% - 40px));
@@ -996,8 +1210,13 @@ h3 {
   .about-grid,
   .rooms-grid,
   .amenities-grid,
+  .occupancy-public,
   .booking-panel,
   .footer {
+    grid-template-columns: 1fr;
+  }
+
+  .occupancy-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1103,6 +1322,7 @@ h3 {
   }
 
   .amenities-grid,
+  .occupancy-public,
   .gallery-grid {
     grid-template-columns: 1fr;
   }

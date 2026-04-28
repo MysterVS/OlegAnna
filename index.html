@@ -20,6 +20,7 @@
       <nav class="nav" data-nav aria-label="Основная навигация">
         <a href="#about">Об отеле</a>
         <a href="#rooms">Номера</a>
+        <a href="#occupancy">Занятость</a>
         <a href="#gallery">Фото</a>
         <a href="#contacts">Контакты</a>
       </nav>
@@ -295,6 +296,56 @@
           <button class="gallery-item" type="button" data-lightbox="assets/4.png" data-lightbox-group="gallery">
             <img src="assets/4.png" alt="Фото гостевого дома 4" />
           </button>
+        </div>
+      </section>
+
+      <section class="occupancy-section" id="occupancy">
+        <div class="occupancy-shell">
+          <div class="section-heading occupancy-heading">
+            <div>
+              <div class="section-kicker">Занятость</div>
+              <h2>Текущая занятость номеров</h2>
+            </div>
+            <p>Статусы видны всем. Редактирование доступно только после входа администратора.</p>
+          </div>
+
+          <div class="occupancy-layout">
+            <div class="occupancy-public" data-occupancy-public></div>
+
+            <aside class="occupancy-admin">
+              <div class="admin-card" data-admin-auth-card>
+                <div class="admin-card-heading">
+                  <h3>Вход для администратора</h3>
+                  <p>Войдите, чтобы менять статусы, подписи и примечания.</p>
+                </div>
+                <form class="admin-form" data-admin-login-form>
+                  <label class="field">
+                    <span>Логин</span>
+                    <input type="text" name="login" autocomplete="username" placeholder="Введите логин" required />
+                  </label>
+                  <label class="field">
+                    <span>Пароль</span>
+                    <input type="password" name="password" autocomplete="current-password" placeholder="Введите пароль" required />
+                  </label>
+                  <button class="button button-primary" type="submit">Войти</button>
+                  <p class="admin-message" data-admin-message aria-live="polite"></p>
+                </form>
+              </div>
+
+              <div class="admin-card is-hidden" data-admin-panel>
+                <div class="admin-card-heading">
+                  <h3>Управление занятостью</h3>
+                  <p>Изменения сразу отображаются в публичном блоке на этом устройстве.</p>
+                </div>
+                <form class="admin-editor" data-admin-editor></form>
+                <div class="admin-actions">
+                  <button class="button button-primary" type="button" data-admin-save>Сохранить</button>
+                  <button class="button button-secondary" type="button" data-admin-logout>Выйти</button>
+                </div>
+                <p class="admin-message" data-admin-save-message aria-live="polite"></p>
+              </div>
+            </aside>
+          </div>
         </div>
       </section>
 
