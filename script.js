@@ -36,6 +36,7 @@ const calendarClose = document.querySelector("[data-calendar-close]");
 const calendarTitle = document.querySelector("[data-calendar-title]");
 const calendarSubtitle = document.querySelector("[data-calendar-subtitle]");
 const calendarMonths = document.querySelector("[data-calendar-months]");
+const calendarMonthPicker = document.querySelector("[data-calendar-month-picker]");
 
 const ADMIN_LOGIN = "theblady";
 const ADMIN_PASSWORD = "13user13";
@@ -78,6 +79,7 @@ let activeLightboxGroup = [];
 let activeLightboxIndex = 0;
 let occupancyState = loadOccupancyState();
 let activeCalendarRoomId = null;
+let activeCalendarMonth = null;
 let occupancyExpanded = false;
 
 function escapeHtml(value) {
@@ -124,6 +126,10 @@ function monthLabel(date) {
     month: "long",
     year: "numeric"
   }).format(date);
+}
+
+function monthInputValue(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 }
 
 function createDefaultState() {
@@ -473,8 +479,10 @@ function openCalendar(roomId) {
 
   activeCalendarRoomId = roomId;
   const startDate = parseIsoDate(getFilterRange().start);
-  const firstMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-  const secondMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
+  const currentMonth = activeCalendarMonth
+    ? new Date(`${activeCalendarMonth}-01T00:00:00`)
+    : new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  activeCalendarMonth = monthInputValue(currentMonth);
 
   if (calendarTitle) {
     calendarTitle.textContent = `${room.code} • ${room.categoryLabel}`;
@@ -483,7 +491,11 @@ function openCalendar(roomId) {
     calendarSubtitle.textContent = `${room.floorLabel} — свободные и занятые даты`;
   }
 
-  calendarMonths.innerHTML = [firstMonth, secondMonth].map((date) => renderCalendarMonth(roomId, date)).join("");
+  if (calendarMonthPicker) {
+    calendarMonthPicker.value = activeCalendarMonth;
+  }
+
+  calendarMonths.innerHTML = renderCalendarMonth(roomId, currentMonth);
   if (!calendarDialog.open) {
     calendarDialog.showModal();
   }
@@ -831,6 +843,12 @@ roomCheckButtons.forEach((button) => {
 
 calendarClose?.addEventListener("click", () => {
   calendarDialog?.close();
+});
+
+calendarMonthPicker?.addEventListener("change", () => {
+  if (!activeCalendarRoomId || !calendarMonthPicker.value) return;
+  activeCalendarMonth = calendarMonthPicker.value;
+  openCalendar(activeCalendarRoomId);
 });
 
 calendarDialog?.addEventListener("click", (event) => {

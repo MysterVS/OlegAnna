@@ -1305,6 +1305,16 @@ h3 {
   gap: 8px;
 }
 
+.calendar-controls {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+
+.calendar-month-picker {
+  width: min(240px, 100%);
+}
+
 .legend-chip {
   width: 12px;
   height: 12px;
@@ -1321,7 +1331,7 @@ h3 {
 
 .calendar-months {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 18px;
 }
 
