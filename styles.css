@@ -306,6 +306,10 @@ h3 {
   box-shadow: var(--shadow);
 }
 
+.about-photo img {
+  object-position: center center;
+}
+
 .rooms-section,
 .booking-section {
   width: 100%;
@@ -757,6 +761,10 @@ h3 {
 
   .about-photo {
     min-height: 360px;
+  }
+
+  .about-photo img {
+    object-position: center 35%;
   }
 
   .amenities-grid {
