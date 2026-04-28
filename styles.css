@@ -57,7 +57,7 @@ button {
   display: grid;
   width: min(1180px, calc(100% - 32px));
   min-height: 64px;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
   gap: 22px;
   padding: 12px 14px 12px 18px;
@@ -122,6 +122,7 @@ button {
   white-space: nowrap;
 }
 
+.admin-trigger,
 .menu-button {
   display: none;
   width: 44px;
@@ -131,6 +132,26 @@ button {
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
+}
+
+.admin-trigger {
+  display: grid;
+  color: #3b342f;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-trigger:hover {
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(23, 20, 18, 0.1);
+}
+
+.admin-trigger svg {
+  width: 20px;
+  height: 20px;
 }
 
 .menu-button span {
@@ -969,6 +990,43 @@ h3 {
   color: #137a47;
 }
 
+.admin-dialog {
+  width: min(420px, calc(100% - 28px));
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.admin-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.44);
+}
+
+.admin-dialog-card {
+  position: relative;
+  padding: 26px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(23, 20, 18, 0.22);
+}
+
+.admin-dialog-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .is-hidden {
   display: none !important;
 }
@@ -1152,7 +1210,7 @@ h3 {
 
 @media (max-width: 920px) {
   .site-header {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr auto auto;
     border-radius: 28px;
   }
 
@@ -1160,6 +1218,7 @@ h3 {
     display: none;
   }
 
+  .admin-trigger,
   .menu-button {
     display: block;
     justify-self: end;
@@ -1268,7 +1327,7 @@ h3 {
     width: auto;
     min-height: 58px;
     padding: 8px 10px 8px 12px;
-    gap: 12px;
+    gap: 10px;
     transform: none;
   }
 
@@ -1282,6 +1341,12 @@ h3 {
     width: 42px;
     height: 42px;
     flex-basis: 42px;
+  }
+
+  .admin-trigger,
+  .menu-button {
+    width: 42px;
+    height: 42px;
   }
 
   .site-header .brand-mark:hover {

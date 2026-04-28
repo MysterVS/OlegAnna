@@ -9,12 +9,14 @@ const lightboxCounter = document.querySelector("[data-lightbox-counter]");
 const lightboxStage = document.querySelector(".lightbox-stage");
 
 const occupancyPublic = document.querySelector("[data-occupancy-public]");
+const adminTrigger = document.querySelector("[data-admin-trigger]");
+const adminDialog = document.querySelector("[data-admin-dialog]");
+const adminDialogClose = document.querySelector("[data-admin-dialog-close]");
 const adminLoginForm = document.querySelector("[data-admin-login-form]");
 const adminEditor = document.querySelector("[data-admin-editor]");
 const adminMessage = document.querySelector("[data-admin-message]");
 const adminSaveMessage = document.querySelector("[data-admin-save-message]");
 const adminPanel = document.querySelector("[data-admin-panel]");
-const adminAuthCard = document.querySelector("[data-admin-auth-card]");
 const adminSaveButton = document.querySelector("[data-admin-save]");
 const adminLogoutButton = document.querySelector("[data-admin-logout]");
 
@@ -184,7 +186,6 @@ function isAdminLoggedIn() {
 function updateAdminVisibility() {
   const loggedIn = isAdminLoggedIn();
   adminPanel?.classList.toggle("is-hidden", !loggedIn);
-  adminAuthCard?.classList.toggle("is-hidden", loggedIn);
   if (loggedIn) {
     renderAdminEditor();
   }
@@ -345,6 +346,25 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+adminTrigger?.addEventListener("click", () => {
+  if (isAdminLoggedIn()) {
+    document.getElementById("occupancy")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  adminDialog?.showModal();
+});
+
+adminDialogClose?.addEventListener("click", () => {
+  adminDialog?.close();
+});
+
+adminDialog?.addEventListener("click", (event) => {
+  if (event.target === adminDialog) {
+    adminDialog.close();
+  }
+});
+
 adminLoginForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const formData = new FormData(adminLoginForm);
@@ -357,6 +377,8 @@ adminLoginForm?.addEventListener("submit", (event) => {
     setMessage(adminSaveMessage, "Вы вошли как администратор.", "is-success");
     adminLoginForm.reset();
     updateAdminVisibility();
+    adminDialog?.close();
+    document.getElementById("occupancy")?.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
 

@@ -25,6 +25,14 @@
         <a href="#contacts">Контакты</a>
       </nav>
       <a class="header-phone" href="tel:+79183903160">+7 918 390-31-60</a>
+      <button class="admin-trigger" type="button" data-admin-trigger aria-label="Вход администратора" title="Вход администратора">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 12.25a4.25 4.25 0 1 0-4.25-4.25A4.25 4.25 0 0 0 12 12.25Zm0 2.25c-3.86 0-7 2.27-7 5.07 0 .24.19.43.43.43h13.14c.24 0 .43-.19.43-.43 0-2.8-3.14-5.07-7-5.07Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
       <button class="menu-button" data-menu-button aria-label="Открыть меню" aria-expanded="false">
         <span></span>
         <span></span>
@@ -313,25 +321,6 @@
             <div class="occupancy-public" data-occupancy-public></div>
 
             <aside class="occupancy-admin">
-              <div class="admin-card" data-admin-auth-card>
-                <div class="admin-card-heading">
-                  <h3>Вход для администратора</h3>
-                  <p>Войдите, чтобы менять статусы, подписи и примечания.</p>
-                </div>
-                <form class="admin-form" data-admin-login-form>
-                  <label class="field">
-                    <span>Логин</span>
-                    <input type="text" name="login" autocomplete="username" placeholder="Введите логин" required />
-                  </label>
-                  <label class="field">
-                    <span>Пароль</span>
-                    <input type="password" name="password" autocomplete="current-password" placeholder="Введите пароль" required />
-                  </label>
-                  <button class="button button-primary" type="submit">Войти</button>
-                  <p class="admin-message" data-admin-message aria-live="polite"></p>
-                </form>
-              </div>
-
               <div class="admin-card is-hidden" data-admin-panel>
                 <div class="admin-card-heading">
                   <h3>Управление занятостью</h3>
@@ -381,6 +370,28 @@
         <a href="https://vk.com/shkolnaya38a" target="_blank" rel="noreferrer">VK</a>
       </div>
     </footer>
+
+    <dialog class="admin-dialog" data-admin-dialog aria-label="Вход администратора">
+      <div class="admin-dialog-card">
+        <button class="admin-dialog-close" type="button" data-admin-dialog-close aria-label="Закрыть">×</button>
+        <div class="admin-card-heading">
+          <h3>Вход администратора</h3>
+          <p>Введите логин и пароль, чтобы редактировать занятость номеров.</p>
+        </div>
+        <form class="admin-form" data-admin-login-form>
+          <label class="field">
+            <span>Логин</span>
+            <input type="text" name="login" autocomplete="username" placeholder="Введите логин" required />
+          </label>
+          <label class="field">
+            <span>Пароль</span>
+            <input type="password" name="password" autocomplete="current-password" placeholder="Введите пароль" required />
+          </label>
+          <button class="button button-primary" type="submit">Войти</button>
+          <p class="admin-message" data-admin-message aria-live="polite"></p>
+        </form>
+      </div>
+    </dialog>
 
     <dialog class="lightbox" data-lightbox-dialog aria-label="Просмотр фото">
       <button class="lightbox-close" data-lightbox-close aria-label="Закрыть">×</button>
