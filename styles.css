@@ -300,14 +300,15 @@ h3 {
 }
 
 .about-photo {
-  min-height: 520px;
+  min-height: clamp(320px, 42vw, 460px);
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: 8px;
   box-shadow: var(--shadow);
 }
 
 .about-photo img {
-  object-position: center center;
+  object-position: center 48%;
 }
 
 .rooms-section,
@@ -760,11 +761,12 @@ h3 {
   }
 
   .about-photo {
-    min-height: 360px;
+    min-height: 300px;
+    aspect-ratio: 16 / 11;
   }
 
   .about-photo img {
-    object-position: center 35%;
+    object-position: center 42%;
   }
 
   .amenities-grid {
