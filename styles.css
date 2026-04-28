@@ -538,7 +538,7 @@ h3 {
 
 .wifi-dot {
   position: absolute;
-  bottom: 18px;
+  bottom: 12px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -549,29 +549,29 @@ h3 {
   position: absolute;
   left: 50%;
   border: 3px solid transparent;
-  border-top-color: var(--accent-dark);
+  border-bottom-color: var(--accent-dark);
   border-radius: 50%;
-  transform: translateX(-50%) rotate(180deg);
+  transform: translateX(-50%);
   opacity: 0.35;
   animation: wifiPulse 1.8s ease-in-out infinite;
 }
 
 .wifi-arc-1 {
-  bottom: 18px;
+  bottom: 20px;
   width: 18px;
   height: 18px;
   animation-delay: 0s;
 }
 
 .wifi-arc-2 {
-  bottom: 14px;
+  bottom: 20px;
   width: 30px;
   height: 30px;
   animation-delay: 0.22s;
 }
 
 .wifi-arc-3 {
-  bottom: 8px;
+  bottom: 20px;
   width: 44px;
   height: 44px;
   animation-delay: 0.44s;
@@ -597,12 +597,12 @@ h3 {
 
 .sea-line {
   position: absolute;
-  left: -18px;
-  width: 86px;
-  height: 10px;
-  border-top: 3px solid var(--sea);
-  border-radius: 999px;
-  opacity: 0.95;
+  left: -8px;
+  width: 80px;
+  height: 12px;
+  background:
+    radial-gradient(circle at 6px 10px, transparent 7px, var(--sea) 7px 9px, transparent 9px) 0 0 / 24px 12px repeat-x;
+  opacity: 0.92;
   animation: seaRun 2.8s linear infinite;
 }
 
@@ -611,12 +611,12 @@ h3 {
 }
 
 .sea-line-2 {
-  top: 28px;
+  top: 29px;
   animation-delay: -0.9s;
 }
 
 .sea-line-3 {
-  top: 38px;
+  top: 40px;
   animation-delay: -1.8s;
 }
 
@@ -721,11 +721,11 @@ h3 {
 
 @keyframes seaRun {
   0% {
-    transform: translateX(-14px);
+    transform: translateX(-10px);
   }
 
   100% {
-    transform: translateX(16px);
+    transform: translateX(14px);
   }
 }
 
