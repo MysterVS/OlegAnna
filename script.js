@@ -238,9 +238,9 @@ function getFilterRange() {
 function hasActiveFilters() {
   const { start, end } = getFilterRange();
   return (
-    (filterType?.value || "") !== "" && (filterType?.value || "") !== "all" ||
-    (filterFloor?.value || "") !== "" && (filterFloor?.value || "") !== "all" ||
-    (filterRoom?.value || "") !== "" && (filterRoom?.value || "") !== "all" ||
+    (filterType?.value || "") !== "" ||
+    (filterFloor?.value || "") !== "" ||
+    (filterRoom?.value || "") !== "" ||
     start !== defaultFilterStart ||
     end !== defaultFilterEnd
   );
