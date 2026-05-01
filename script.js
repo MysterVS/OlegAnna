@@ -433,14 +433,15 @@ function renderRoomList() {
           : [room.categoryLabel, room.floorLabel]
               .filter((value, index, array) => value && value !== room.code && array.indexOf(value) === index)
               .join(" • ");
+      const headlineClass = room.category === "family" ? "occupancy-card-headline is-stacked" : "occupancy-card-headline";
       return `
         <article class="occupancy-card">
           <div class="occupancy-card-top">
-            <div>
-              ${occupancyTypeText ? `<div class="occupancy-type">${escapeHtml(occupancyTypeText)}</div>` : ""}
+            ${occupancyTypeText ? `<div class="occupancy-type">${escapeHtml(occupancyTypeText)}</div>` : ""}
+            <div class="${headlineClass}">
               <h3>${escapeHtml(room.code)}</h3>
+              <span class="status-badge ${status.className}">${status.label}</span>
             </div>
-            <span class="status-badge ${status.className}">${status.label}</span>
           </div>
           <div class="occupancy-meta">
             <div class="occupancy-meta-row">

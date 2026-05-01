@@ -956,11 +956,16 @@ h3 {
 }
 
 .occupancy-card-top {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 14px;
+  display: grid;
+  gap: 10px;
   margin-bottom: 14px;
+}
+
+.occupancy-card-headline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .occupancy-card h3,
@@ -1936,15 +1941,17 @@ h3 {
   }
 
   .occupancy-card-top {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
     margin-bottom: 12px;
   }
 
-  .occupancy-card-top .status-badge {
-    justify-self: end;
-    align-self: start;
+  .occupancy-card-headline {
+    align-items: start;
+  }
+
+  .occupancy-card-headline.is-stacked {
+    flex-direction: column;
+    align-items: start;
   }
 
   .occupancy-filter-grid,
