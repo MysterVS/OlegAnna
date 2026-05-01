@@ -511,11 +511,17 @@ h3 {
 }
 
 .room-footer strong {
+  display: inline-flex;
+  align-items: baseline;
+  flex: 0 0 auto;
+  white-space: nowrap;
   font-size: 20px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0;
 }
 
 .room-footer a {
-  color: var(--accent);
   font-weight: 900;
 }
 
@@ -527,10 +533,16 @@ h3 {
   gap: 12px;
 }
 
-.room-check-button {
+.room-action-button {
   min-height: 40px;
   padding: 10px 16px;
   font-weight: 800;
+  line-height: 1;
+  text-align: center;
+}
+
+.room-request-button {
+  min-width: 116px;
 }
 
 .amenities-section h2 {
