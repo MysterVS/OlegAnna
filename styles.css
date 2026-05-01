@@ -231,30 +231,31 @@ h1 {
 
 .hero-title {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   max-width: 640px;
   margin-bottom: 24px;
   line-height: 1.02;
 }
 
-.hero-title-top,
-.hero-title-bottom {
+.hero-title-top {
   display: block;
-  font-size: clamp(28px, 3.2vw, 44px);
-  font-weight: 700;
-  line-height: 1.08;
+  max-width: 620px;
+  font-size: clamp(34px, 4.8vw, 64px);
+  font-weight: 750;
+  line-height: 1.04;
 }
 
 .hero-title-brand {
   display: block;
   font-family: "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
-  font-size: clamp(58px, 8vw, 108px);
+  font-size: clamp(42px, 5.8vw, 72px);
   font-style: italic;
   font-weight: 500;
-  line-height: 0.9;
+  line-height: 0.96;
   letter-spacing: 0.01em;
   color: #fff6ed;
   text-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+  opacity: 0.96;
 }
 
 h2 {
@@ -1864,19 +1865,18 @@ h3 {
   }
 
   .hero-title {
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 20px;
   }
 
-  .hero-title-top,
-  .hero-title-bottom {
-    font-size: 24px;
-    line-height: 1.12;
+  .hero-title-top {
+    font-size: 32px;
+    line-height: 1.06;
   }
 
   .hero-title-brand {
-    font-size: clamp(48px, 14vw, 76px);
-    line-height: 0.92;
+    font-size: clamp(38px, 11vw, 56px);
+    line-height: 0.98;
   }
 
   .hero-copy {
