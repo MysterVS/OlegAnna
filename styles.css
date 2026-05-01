@@ -1341,12 +1341,33 @@ h3 {
 
 .calendar-controls {
   display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
   justify-content: flex-start;
   margin-bottom: 18px;
 }
 
 .calendar-month-picker {
   width: min(240px, 100%);
+}
+
+.calendar-range-panel {
+  display: grid;
+  gap: 10px;
+  min-width: min(320px, 100%);
+}
+
+.calendar-range-summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.calendar-range-reset {
+  width: auto;
+  min-height: 42px;
+  padding: 10px 16px;
 }
 
 .legend-chip {
@@ -1396,12 +1417,17 @@ h3 {
 
 .calendar-day {
   display: grid;
+  width: 100%;
   min-height: 44px;
   place-items: center;
+  padding: 0;
+  border: 0;
   border-radius: 8px;
   font-size: 13px;
   background: #f6f0ea;
   color: #8a8078;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
 }
 
 .calendar-day.free {
@@ -1419,8 +1445,25 @@ h3 {
   outline-offset: -2px;
 }
 
+.calendar-day.selected {
+  background: rgba(255, 56, 92, 0.14);
+  color: var(--accent-dark);
+}
+
+.calendar-day.range-start,
+.calendar-day.range-end {
+  background: var(--accent);
+  color: #fff;
+}
+
 .calendar-day.empty {
   background: transparent;
+  cursor: default;
+}
+
+.calendar-day:not(.empty):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(23, 20, 18, 0.08);
 }
 
 .is-hidden {

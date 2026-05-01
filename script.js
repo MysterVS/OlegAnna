@@ -38,6 +38,8 @@ const calendarTitle = document.querySelector("[data-calendar-title]");
 const calendarSubtitle = document.querySelector("[data-calendar-subtitle]");
 const calendarMonths = document.querySelector("[data-calendar-months]");
 const calendarMonthPicker = document.querySelector("[data-calendar-month-picker]");
+const calendarRangeSummary = document.querySelector("[data-calendar-range-summary]");
+const calendarRangeReset = document.querySelector("[data-calendar-range-reset]");
 
 const ADMIN_LOGIN = "theblady";
 const ADMIN_PASSWORD = "13user13";
@@ -81,6 +83,8 @@ let activeLightboxIndex = 0;
 let occupancyState = loadOccupancyState();
 let activeCalendarRoomId = null;
 let activeCalendarMonth = null;
+let activeCalendarRangeStart = null;
+let activeCalendarRangeEnd = null;
 let occupancyExpanded = false;
 
 function escapeHtml(value) {
@@ -131,6 +135,13 @@ function monthLabel(date) {
 
 function monthInputValue(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function normalizeRange(start, end) {
+  if (!start && !end) return { start: null, end: null };
+  if (start && !end) return { start, end: start };
+  if (!start && end) return { start: end, end };
+  return start <= end ? { start, end } : { start: end, end: start };
 }
 
 function renderSelectOptions(select, config) {
@@ -261,6 +272,35 @@ function getFilterRange() {
   const endRaw = filterEnd?.value || start;
   const end = endRaw < start ? start : endRaw;
   return { start, end };
+}
+
+function updateCalendarRangeSummary() {
+  if (!calendarRangeSummary) return;
+  if (!activeCalendarRangeStart) {
+    calendarRangeSummary.textContent = "Выберите даты в календаре";
+    return;
+  }
+
+  if (!activeCalendarRangeEnd || activeCalendarRangeStart === activeCalendarRangeEnd) {
+    calendarRangeSummary.textContent = `Начало: ${formatDate(activeCalendarRangeStart)}. Выберите дату выезда.`;
+    return;
+  }
+
+  calendarRangeSummary.textContent = `Период: ${formatDate(activeCalendarRangeStart)} — ${formatDate(activeCalendarRangeEnd)}`;
+}
+
+function renderActiveCalendarView() {
+  if (!calendarMonths || !activeCalendarRoomId) return;
+  const monthDate = activeCalendarMonth
+    ? new Date(`${activeCalendarMonth}-01T00:00:00`)
+    : new Date(`${monthInputValue(parseIsoDate(getFilterRange().start))}-01T00:00:00`);
+
+  if (calendarMonthPicker) {
+    calendarMonthPicker.value = monthInputValue(monthDate);
+  }
+
+  updateCalendarRangeSummary();
+  calendarMonths.innerHTML = renderCalendarMonth(activeCalendarRoomId, monthDate);
 }
 
 function hasActiveFilters() {
@@ -519,6 +559,9 @@ function openCalendar(roomId) {
   if (!room) return;
 
   activeCalendarRoomId = roomId;
+  const currentRange = getFilterRange();
+  activeCalendarRangeStart = currentRange.start;
+  activeCalendarRangeEnd = currentRange.end;
   const startDate = parseIsoDate(getFilterRange().start);
   const currentMonth = activeCalendarMonth
     ? new Date(`${activeCalendarMonth}-01T00:00:00`)
@@ -536,7 +579,7 @@ function openCalendar(roomId) {
     calendarMonthPicker.value = activeCalendarMonth;
   }
 
-  calendarMonths.innerHTML = renderCalendarMonth(roomId, currentMonth);
+  renderActiveCalendarView();
   if (!calendarDialog.open) {
     calendarDialog.showModal();
   }
@@ -562,7 +605,21 @@ function renderCalendarMonth(roomId, monthDate) {
     const iso = `${year}-${monthValue}-${dayValue}`;
     const stateClass = isDateBusy(roomId, iso) ? "busy" : "free";
     const todayClass = iso === today ? " today" : "";
-    cells.push(`<span class="calendar-day ${stateClass}${todayClass}">${day}</span>`);
+    const isRangeStart = activeCalendarRangeStart === iso;
+    const isRangeEnd = activeCalendarRangeEnd === iso;
+    const isInSelectedRange =
+      activeCalendarRangeStart &&
+      activeCalendarRangeEnd &&
+      iso >= activeCalendarRangeStart &&
+      iso <= activeCalendarRangeEnd;
+    const selectedClasses = [
+      isInSelectedRange ? " selected" : "",
+      isRangeStart ? " range-start" : "",
+      isRangeEnd ? " range-end" : ""
+    ].join("");
+    cells.push(
+      `<button class="calendar-day ${stateClass}${todayClass}${selectedClasses}" type="button" data-calendar-date="${iso}">${day}</button>`
+    );
   }
 
   return `
@@ -584,6 +641,32 @@ function updateAdminVisibility() {
   if (loggedIn) {
     renderAdminEditor();
   }
+}
+
+function applyCalendarRangeToFilters() {
+  const normalizedRange = normalizeRange(activeCalendarRangeStart, activeCalendarRangeEnd);
+  if (!normalizedRange.start || !normalizedRange.end) return;
+  if (filterStart) filterStart.value = normalizedRange.start;
+  if (filterEnd) filterEnd.value = normalizedRange.end;
+  occupancyExpanded = hasActiveFilters();
+  renderRoomList();
+}
+
+function handleCalendarDateSelection(iso) {
+  if (!iso) return;
+
+  if (!activeCalendarRangeStart || (activeCalendarRangeStart && activeCalendarRangeEnd)) {
+    activeCalendarRangeStart = iso;
+    activeCalendarRangeEnd = null;
+  } else {
+    const normalizedRange = normalizeRange(activeCalendarRangeStart, iso);
+    activeCalendarRangeStart = normalizedRange.start;
+    activeCalendarRangeEnd = normalizedRange.end;
+    applyCalendarRangeToFilters();
+  }
+
+  updateCalendarRangeSummary();
+  renderActiveCalendarView();
 }
 
 function showLightboxItem(index) {
@@ -892,13 +975,28 @@ calendarClose?.addEventListener("click", () => {
 calendarMonthPicker?.addEventListener("change", () => {
   if (!activeCalendarRoomId || !calendarMonthPicker.value) return;
   activeCalendarMonth = calendarMonthPicker.value;
-  openCalendar(activeCalendarRoomId);
+  renderActiveCalendarView();
 });
 
 calendarDialog?.addEventListener("click", (event) => {
   if (event.target === calendarDialog) {
     calendarDialog.close();
   }
+});
+
+calendarMonths?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+  const button = target.closest("[data-calendar-date]");
+  if (!(button instanceof HTMLElement)) return;
+  const iso = button.dataset.calendarDate;
+  handleCalendarDateSelection(iso || "");
+});
+
+calendarRangeReset?.addEventListener("click", () => {
+  activeCalendarRangeStart = null;
+  activeCalendarRangeEnd = null;
+  renderActiveCalendarView();
 });
 
 [filterType, filterFloor].forEach((control) => {
