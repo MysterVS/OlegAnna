@@ -1977,6 +1977,25 @@ h3 {
     width: 100%;
   }
 
+  .occupancy-card-actions {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .occupancy-card-actions .button,
+  .occupancy-request-button {
+    width: auto;
+    min-width: 0;
+  }
+
+  .occupancy-request-button {
+    flex: 1 1 auto;
+  }
+
+  .occupancy-calendar-button {
+    flex: 0 0 42px;
+  }
+
   .carousel-arrow {
     width: 36px;
     height: 36px;
