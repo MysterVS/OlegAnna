@@ -1935,6 +1935,18 @@ h3 {
     padding: 20px;
   }
 
+  .occupancy-card-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .occupancy-card-top .status-badge {
+    justify-self: end;
+    align-self: start;
+  }
+
   .occupancy-filter-grid,
   .admin-room-fields {
     grid-template-columns: 1fr;

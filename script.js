@@ -427,11 +427,17 @@ function renderRoomList() {
     .map((room) => {
       const status = getRangeStatus(room.id, start, end);
       const note = getRoomNote(room.id);
+      const occupancyTypeText =
+        room.category === "family"
+          ? ""
+          : [room.categoryLabel, room.floorLabel]
+              .filter((value, index, array) => value && value !== room.code && array.indexOf(value) === index)
+              .join(" • ");
       return `
         <article class="occupancy-card">
           <div class="occupancy-card-top">
             <div>
-              <div class="occupancy-type">${escapeHtml(room.categoryLabel)} • ${escapeHtml(room.floorLabel)}</div>
+              ${occupancyTypeText ? `<div class="occupancy-type">${escapeHtml(occupancyTypeText)}</div>` : ""}
               <h3>${escapeHtml(room.code)}</h3>
             </div>
             <span class="status-badge ${status.className}">${status.label}</span>
