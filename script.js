@@ -685,7 +685,7 @@ function showLightboxItem(index) {
   const img = trigger.querySelector("img");
   if (!src) return;
   lightboxImage.src = src;
-  lightboxImage.alt = img?.getAttribute("alt") || "Фото гостевого дома Oleganna";
+  lightboxImage.alt = img?.getAttribute("alt") || "Фото гостевого дома OlegAnna";
   if (lightboxCounter) {
     lightboxCounter.textContent = `${activeLightboxIndex + 1} / ${activeLightboxGroup.length}`;
   }
