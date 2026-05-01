@@ -1980,6 +1980,7 @@ h3 {
   .occupancy-card-actions {
     flex-wrap: nowrap;
     align-items: center;
+    gap: 8px;
   }
 
   .occupancy-card-actions .button,
@@ -1990,6 +1991,10 @@ h3 {
 
   .occupancy-request-button {
     flex: 1 1 auto;
+    min-height: 42px;
+    padding: 10px 14px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .occupancy-calendar-button {
