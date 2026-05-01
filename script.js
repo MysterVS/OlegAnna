@@ -393,21 +393,16 @@ function renderRoomList() {
             <div>
               <div class="occupancy-type">${escapeHtml(room.categoryLabel)} • ${escapeHtml(room.floorLabel)}</div>
               <h3>${escapeHtml(room.code)}</h3>
-              <p>${escapeHtml(getRangeStatusText(room.id, start, end))}</p>
             </div>
             <span class="status-badge ${status.className}">${status.label}</span>
           </div>
           <div class="occupancy-meta">
             <div class="occupancy-meta-row">
-              <span class="occupancy-label">Период</span>
+              <span class="occupancy-label">Выбранный период</span>
               <span class="occupancy-value">${escapeHtml(formatDate(start))} — ${escapeHtml(formatDate(end))}</span>
             </div>
-            <div class="occupancy-meta-row">
-              <span class="occupancy-label">Ближайший статус</span>
-              <span class="occupancy-value">${escapeHtml(getRangeStatusText(room.id, start, end))}</span>
-            </div>
           </div>
-          <p class="occupancy-note">${escapeHtml(note || "Примечание для гостей пока не добавлено.")}</p>
+          ${note ? `<p class="occupancy-note">${escapeHtml(note)}</p>` : ""}
           <div class="occupancy-card-actions">
             <button class="button button-secondary" type="button" data-calendar-open="${room.id}">Календарь</button>
           </div>

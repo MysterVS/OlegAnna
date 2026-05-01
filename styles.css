@@ -909,7 +909,7 @@ h3 {
   align-items: start;
   justify-content: space-between;
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .occupancy-card h3,
@@ -919,6 +919,7 @@ h3 {
 
 .occupancy-card h3 {
   margin-top: 0;
+  margin-bottom: 0;
 }
 
 .occupancy-card p,
@@ -973,12 +974,15 @@ h3 {
 
 .occupancy-meta {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .occupancy-meta-row {
   display: grid;
   gap: 4px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #faf6f1;
 }
 
 .occupancy-label {
@@ -996,22 +1000,38 @@ h3 {
 }
 
 .occupancy-note {
-  padding-top: 14px;
-  margin-top: 16px;
-  border-top: 1px solid var(--line);
+  margin-top: 14px;
+  margin-bottom: 0;
   color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.occupancy-note::before {
+  content: "Примечание";
+  display: block;
+  margin-bottom: 4px;
+  color: #8a8078;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .occupancy-card-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .occupancy-card-actions .button {
   min-height: 42px;
   padding: 10px 16px;
+}
+
+.occupancy-card-actions .button-secondary {
+  width: 100%;
 }
 
 .occupancy-admin {
