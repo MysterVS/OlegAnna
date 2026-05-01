@@ -444,7 +444,15 @@ function renderRoomList() {
           </div>
           ${note ? `<p class="occupancy-note">${escapeHtml(note)}</p>` : ""}
           <div class="occupancy-card-actions">
-            <button class="button button-secondary" type="button" data-calendar-open="${room.id}">Календарь</button>
+            <a class="button button-primary occupancy-request-button" href="#booking">Запросить</a>
+            <button class="icon-button occupancy-calendar-button" type="button" data-calendar-open="${room.id}" aria-label="Открыть календарь">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1.25A2.75 2.75 0 0 1 22 6.75v11.5A2.75 2.75 0 0 1 19.25 21H4.75A2.75 2.75 0 0 1 2 18.25V6.75A2.75 2.75 0 0 1 4.75 4H6V3a1 1 0 0 1 1-1Zm12.25 8H4v8.25c0 .41.34.75.75.75h14.5c.41 0 .75-.34.75-.75V10ZM6 6H4.75a.75.75 0 0 0-.75.75V8h16V6.75a.75.75 0 0 0-.75-.75H18v1a1 1 0 1 1-2 0V6H8v1a1 1 0 1 1-2 0V6Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
           </div>
         </article>
       `;

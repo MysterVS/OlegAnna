@@ -1032,7 +1032,8 @@ h3 {
 
 .occupancy-card-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 10px;
   margin-top: 14px;
 }
@@ -1042,8 +1043,19 @@ h3 {
   padding: 10px 16px;
 }
 
-.occupancy-card-actions .button-secondary {
-  width: 100%;
+.occupancy-request-button {
+  flex: 1 1 auto;
+}
+
+.occupancy-calendar-button {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+}
+
+.occupancy-calendar-button svg {
+  width: 18px;
+  height: 18px;
 }
 
 .occupancy-admin {
