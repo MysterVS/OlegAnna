@@ -245,6 +245,15 @@ h1 {
   line-height: 1.04;
 }
 
+.hero-title-subline {
+  display: block;
+  max-width: 520px;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 650;
+  line-height: 1.08;
+  color: rgba(255, 255, 255, 0.94);
+}
+
 .hero-title-brand {
   display: block;
   font-family: "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
@@ -1872,6 +1881,11 @@ h3 {
   .hero-title-top {
     font-size: 32px;
     line-height: 1.06;
+  }
+
+  .hero-title-subline {
+    font-size: 24px;
+    line-height: 1.12;
   }
 
   .hero-title-brand {
